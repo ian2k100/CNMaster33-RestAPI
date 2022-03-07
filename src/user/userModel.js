@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Games = require("../games/gamesModel");
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -14,6 +15,11 @@ const userSchema = new mongoose.Schema({
     pass: {
         type: String,
         required: true,
+    },
+    games: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: `${Games}`,
+        unique: false
     }
 });
 
