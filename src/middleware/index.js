@@ -17,9 +17,9 @@ exports.hashPass = async (req, res, next) => {
 
 exports.decryptPassword = async(req, res, next) => {
     try { 
-        const userInfo = await User.findOne({ username: req.body.username });
+        const user = await User.findOne({ username: req.body.username });
         if (await bcrypt.compare(req.body.password, userInfo.password)){
-            req.user = userInfo;
+            req.user = user;
             next();
         } else {
             res.status(500).send({ message: "You have entered the wrong password"})
@@ -32,7 +32,7 @@ exports.decryptPassword = async(req, res, next) => {
 
 exports.tokenAuth = async (req,res, next) => {
     try {
-        const token = req.header("Authorization").replace("Bearer", "");
+        const token = req.header("Authorization").replace("Bearer ", "");
         const decoded = await jwt.verify(token, process.env.SECRET);
         const user = await User.findById(decoded._id);
         req.user = user;

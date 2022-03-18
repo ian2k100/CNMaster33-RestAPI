@@ -1,11 +1,15 @@
 const { Router } = require("express");
-const { addUser, testUser, findUser, updateUser, deleteUser } = require("./userControllers");
-const { hashPass } = require("../middleware");
+const { addUser, login, testUser, findUser, updateUser, deleteUser } = require("./userControllers");
+const { hashPass, decryptPassword, tokenAuth} = require("../middleware");
 const userRouter = Router();
 
 
 //http verbs and /user is the end point, this runs the function in insomina 
 userRouter.post("/user", hashPass, addUser);
+
+userRouter.get("/token", tokenAuth, login);
+
+userRouter.post("/login", decryptPassword, login)
 
 userRouter.get("/test", testUser);
 
